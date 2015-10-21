@@ -48,6 +48,7 @@ class mongoCool {
 	}
 
 	/**
+	 * 连接数据库
 	 * @param $host
 	 * @param $port
 	 *
@@ -59,6 +60,8 @@ class mongoCool {
 	}
 
 	/**
+	 * 选择数据库
+	 *
 	 * @param $dbname
 	 *
 	 * @return mongoCool
@@ -69,6 +72,8 @@ class mongoCool {
 	}
 
 	/**
+	 * 选择集合/表
+	 *
 	 * @param $collection
 	 * @param $dbname
 	 *
@@ -84,6 +89,8 @@ class mongoCool {
 	}
 
 	/**
+	 * 插入数据
+	 *
 	 * @param $data
 	 *
 	 * @return mixed
@@ -116,6 +123,13 @@ class mongoCool {
 		return $result;
 	}
 
+	/**
+	 * 获取多条数据/不分页
+	 *
+	 * @param null $where
+	 *
+	 * @return array|bool
+	 */
 	function find($where=null){
 		if(!$this->_check_where($where)){
 			$this->error = '条件设置有问题！';
@@ -133,6 +147,15 @@ class mongoCool {
 		return $data;
 	}
 
+	/**
+	 * 获取多条数据，简单分页
+	 *
+	 * @param null $where
+	 * @param int  $num
+	 * @param int  $page
+	 *
+	 * @return array|bool
+	 */
 	function limit($where=null,$num=5,$page=1){
 		if(!$this->_check_where($where)){
 			$this->error = '条件设置有问题！';
@@ -153,6 +176,13 @@ class mongoCool {
 		return $data;
 	}
 
+	/**
+	 * 更新数据
+	 * @param null  $where
+	 * @param array $data
+	 *
+	 * @return bool
+	 */
 	function update($where=null,$data=array()){
 		if(!$this->_check_where($where)){
 			$this->error = '条件设置有问题！';
@@ -165,11 +195,18 @@ class mongoCool {
 		if($where == null){//故意的
 			$result = $this->collection->update(null,$data);
 		} else {
-			$result = $this->collection->update(null,$data);
+			$result = $this->collection->update($where,$data);
 		}
 		return $result;
 	}
 
+	/**
+	 * 删除数据
+	 *
+	 * @param null $where
+	 *
+	 * @return bool
+	 */
 	function delete($where=null){
 		if(!$this->_check_where($where)){
 			$this->error = '条件设置有问题！';

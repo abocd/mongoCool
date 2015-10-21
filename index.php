@@ -16,3 +16,7 @@ $db = new mongoCool('localhost',27017,'local');
 //}
 
 print_r($db->collection("boy")->limit(null,5,2));
+//部分更新
+$db->collection("boy")->update(array("test"=>"14453983805"),array('$set'=>array("abc"=>"cool++")));
+//更新到只剩abc
+$db->collection("boy")->update(array("test"=>"144539838056"),array("abc"=>"cool++"));
