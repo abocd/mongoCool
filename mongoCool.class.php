@@ -89,6 +89,19 @@ class mongoCool {
 	}
 
 	/**
+	 * 创建集合
+	 *
+	 * @param       $name
+	 * @param array $options
+	 *
+	 * @return mixed
+	 */
+	function create($name,$options=array()){
+		$this->mo->createCollection($name,$options);
+		return $this;
+	}
+
+	/**
 	 * 插入数据
 	 *
 	 * @param $data
