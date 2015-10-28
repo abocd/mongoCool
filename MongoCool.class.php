@@ -217,6 +217,26 @@ class MongoCool {
 	}
 
 	/**
+	 * 获取记录数
+	 *
+	 * @param string $where
+	 *
+	 * @return bool
+	 */
+	function count($where=''){
+		if(!$this->_check_where($where)){
+			$this->error = '条件设置有问题！';
+			return false;
+		}
+		if($where == ''){
+			$result = $this->collection->count();
+		} else {
+			$result = $this->collection->find($where)->count();
+		}
+		return $result;
+	}
+
+	/**
 	 * 更新数据
 	 * @param  $where
 	 * @param array $data
@@ -268,7 +288,7 @@ class MongoCool {
 	 * @return bool
 	 */
 	private function _check_where($where){
-		if($where != null && !is_array($where)){
+		if($where != '' && !is_array($where)){
 			return false;
 		}
 		return true;

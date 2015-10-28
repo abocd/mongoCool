@@ -22,20 +22,24 @@ $db = new MongoCool('localhost',27017,'local');
 //$db->collection("boy")->update(array("test"=>"144539838056"),array("abc"=>"cool++"));
 
 
-$db->collection( "people" )->insert( array(
-	'time' => time(),
-	'data'  => "这是测试的数据"
-) );
-$db->collection( "people" )->insert( array(
-	'time' => time(),
-	'data'  => array(
-		'title'=>"这是标题",
-		'body'=>'这是内容',
-	)
-) );
+//$db->collection( "people" )->insert( array(
+//	'time' => time(),
+//	'data'  => "这是测试的数据"
+//) );
+//$db->collection( "people" )->insert( array(
+//	'time' => time(),
+//	'data'  => array(
+//		'title'=>"这是标题",
+//		'body'=>'这是内容',
+//	)
+//) );
+//
+//$db->collection( "people" )->insert( array(
+//	'_id' => 'custom'.time(),
+//	'time' => time(),
+//	'data'  => "这是测试的数据"
+//) );
 
-$db->collection( "people" )->insert( array(
-	'_id' => 'custom'.time(),
-	'time' => time(),
-	'data'  => "这是测试的数据"
-) );
+var_dump($db->collection("people")->count(array(
+	"data"=>"这是测试的数据"
+)));
