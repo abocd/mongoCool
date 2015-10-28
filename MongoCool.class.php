@@ -6,7 +6,7 @@
  * Date: 15-10-21
  * Time: 上午11:04
  */
-class mongoCool {
+class MongoCool {
 
 	/*
 	 *
@@ -119,19 +119,28 @@ class mongoCool {
 	/**
 	 * 获取单条数据
 	 *
-	 * @param null $where
+	 * @param $where
+	 * @param $sort
 	 *
 	 * @return mixed
 	 */
-	function get($where=null){
+	function get($where='',$sort=''){
 		if(!$this->_check_where($where)){
 			$this->error = '条件设置有问题！';
 			return false;
 		}
-		if($where == null){
-			$result = $this->collection->findOne();
-		}else{
-			$result = $this->collection->findOne($where);
+		if($sort != ''){
+			if ( $where == '' ) {
+				$result = $this->collection->findOne()->sort($sort);
+			} else {
+				$result = $this->collection->findOne( $where )->sort($sort);
+			}
+		} else {
+			if ( $where == '' ) {
+				$result = $this->collection->findOne();
+			} else {
+				$result = $this->collection->findOne( $where );
+			}
 		}
 		return $result;
 	}
@@ -139,19 +148,28 @@ class mongoCool {
 	/**
 	 * 获取多条数据/不分页
 	 *
-	 * @param null $where
+	 * @param $where
+	 * @param $sort
 	 *
 	 * @return array|bool
 	 */
-	function find($where=null){
+	function find($where='',$sort=''){
 		if(!$this->_check_where($where)){
 			$this->error = '条件设置有问题！';
 			return false;
 		}
-		if($where == null){
-			$result = $this->collection->find();
-		}else{
-			$result = $this->collection->find($where);
+		if($sort != ''){
+			if ( $where == '' ) {
+				$result = $this->collection->find()->sort($sort);
+			} else {
+				$result = $this->collection->find( $where )->sort($sort);
+			}
+		} else {
+			if ( $where == '' ) {
+				$result = $this->collection->find();
+			} else {
+				$result = $this->collection->find( $where );
+			}
 		}
 		$data = array();
 		foreach($result as $k => $v){
@@ -163,13 +181,14 @@ class mongoCool {
 	/**
 	 * 获取多条数据，简单分页
 	 *
-	 * @param null $where
+	 * @param $where
 	 * @param int  $num
 	 * @param int  $page
+	 * @param string $sort
 	 *
 	 * @return array|bool
 	 */
-	function limit($where=null,$num=5,$page=1){
+	function limit($where='',$num=5,$page=1,$sort=''){
 		if(!$this->_check_where($where)){
 			$this->error = '条件设置有问题！';
 			return false;
@@ -177,10 +196,18 @@ class mongoCool {
 		if($page<1){
 			$page = 1;
 		}
-		if($where == null){
-			$result = $this->collection->find()->limit($num)->skip(($page-1)*$num);
-		}else{
-			$result = $this->collection->find($where)->limit($num)->skip(($page-1)*$num);
+		if($sort!=''){
+			if ( $where == '' ) {
+				$result = $this->collection->find()->limit( $num )->skip( ( $page - 1 ) * $num )->sort($sort);
+			} else {
+				$result = $this->collection->find( $where )->limit( $num )->skip( ( $page - 1 ) * $num )->sort($sort);
+			}
+		} else {
+			if ( $where == '' ) {
+				$result = $this->collection->find()->limit( $num )->skip( ( $page - 1 ) * $num );
+			} else {
+				$result = $this->collection->find( $where )->limit( $num )->skip( ( $page - 1 ) * $num );
+			}
 		}
 		$data = array();
 		foreach($result as $k => $v){
@@ -191,12 +218,12 @@ class mongoCool {
 
 	/**
 	 * 更新数据
-	 * @param null  $where
+	 * @param  $where
 	 * @param array $data
 	 *
 	 * @return bool
 	 */
-	function update($where=null,$data=array()){
+	function update($where='',$data=array()){
 		if(!$this->_check_where($where)){
 			$this->error = '条件设置有问题！';
 			return false;
@@ -205,7 +232,7 @@ class mongoCool {
 			$this->error = '值不能为空';
 			return false;
 		}
-		if($where == null){//故意的
+		if($where == ''){//故意的
 			$result = $this->collection->update(null,$data);
 		} else {
 			$result = $this->collection->update($where,$data);
@@ -216,16 +243,16 @@ class mongoCool {
 	/**
 	 * 删除数据
 	 *
-	 * @param null $where
+	 * @param $where
 	 *
 	 * @return bool
 	 */
-	function delete($where=null){
+	function delete($where=''){
 		if(!$this->_check_where($where)){
 			$this->error = '条件设置有问题！';
 			return false;
 		}
-		if($where==null){
+		if($where==''){
 			$result = $this->collection->remove();
 		} else {
 			$result = $this->collection->remove($where);
